@@ -3,9 +3,9 @@ require File.join(File.dirname(__FILE__), 'abstract-php-extension')
 class Php53Pspell < AbstractPhp53Extension
   init
   homepage 'http://php.net/manual/en/book.pspell.php'
-  url 'http://www.php.net/get/php-5.3.22.tar.bz2/from/this/mirror'
-  sha1 '8a0948040d70bd7ebf1f3001c4462649b43d5ab0'
-  version '5.3.22'
+  url 'http://www.php.net/get/php-5.3.24.tar.bz2/from/this/mirror'
+  sha1 'ff591a89d77123c7823adf94fea4aca7de5a3dc6'
+  version '5.3.24'
 
   depends_on 'aspell'
 
