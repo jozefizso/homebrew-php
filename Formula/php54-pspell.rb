@@ -4,7 +4,7 @@ class Php54Pspell < AbstractPhp54Extension
   init
   homepage 'http://php.net/manual/en/book.pspell.php'
   url 'http://www.php.net/get/php-5.4.14.tar.bz2/from/this/mirror'
-  sha1 'cfdc044be2c582991a1fe0967898fa38'
+  sha1 '68e90795071f769b8fda22af7d71092d09f42dea'
   version '5.4.14'
 
   depends_on 'aspell'
