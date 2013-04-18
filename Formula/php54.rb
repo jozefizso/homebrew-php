@@ -2,9 +2,9 @@ require File.join(File.dirname(__FILE__), 'abstract-php')
 
 class Php54 < AbstractPhp
   init
-  url 'http://www.php.net/get/php-5.4.12.tar.bz2/from/this/mirror'
-  sha1 '9e1af30b763ba3de19b68b9b8abde1aae1e5e630'
-  version '5.4.12'
+  url 'http://www.php.net/get/php-5.4.14.tar.bz2/from/this/mirror'
+  sha1 'cfdc044be2c582991a1fe0967898fa38'
+  version '5.4.14'
 
   head 'https://svn.php.net/repository/php/php-src/trunk', :using => :svn
 
