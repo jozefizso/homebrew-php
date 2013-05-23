@@ -2,9 +2,11 @@ require File.join(File.dirname(__FILE__), 'abstract-php')
 
 class Php53 < AbstractPhp
   init
-  url 'http://www.php.net/get/php-5.3.24.tar.bz2/from/this/mirror'
-  sha1 'ff591a89d77123c7823adf94fea4aca7de5a3dc6'
-  version '5.3.24'
+  url 'http://www.php.net/get/php-5.3.25.tar.bz2/from/this/mirror'
+  sha1 '8f948bf74a56f0bca70b2f37de6b585af6602b11'
+  version '5.3.25'
+
+  head 'https://github.com/php/php-src.git', :branch => 'PHP-5.3'
 
   depends_on 'libevent' if build.include? 'with-fpm'
 

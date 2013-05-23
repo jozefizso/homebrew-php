@@ -1,25 +1,25 @@
 require File.join(File.dirname(__FILE__), 'abstract-php-extension')
 
-class Php54Apc < AbstractPhp54Extension
+class Php54Apcu < AbstractPhp54Extension
   init
-  homepage 'http://pecl.php.net/package/apc'
-  url 'http://pecl.php.net/get/APC-3.1.13.tgz'
-  sha1 'cafd6ba92ac1c9f500a6c1e300bbe8819daddfae'
-  head 'https://svn.php.net/repository/pecl/apc/trunk/', :using => :svn
+  homepage 'http://pecl.php.net/package/apcu'
+  url 'http://pecl.php.net/get/apcu-4.0.0.tgz'
+  version '4.0.0'
+  sha1 'acb373b28cffefad6c19634ee0d504f209c23808'
 
   depends_on 'pcre'
 
   def install
-    Dir.chdir "APC-#{version}" unless build.head?
+    Dir.chdir "apcu-#{version}" unless build.head?
 
     ENV.universal_binary if build.universal?
 
     safe_phpize
     system "./configure", "--prefix=#{prefix}",
-                          phpconfig,
-                          "--enable-apc-pthreadmutex"
+                          "--enable-apc",
+                          phpconfig
     system "make"
-    prefix.install %w(modules/apc.so apc.php)
+    prefix.install %w(modules/apcu.so)
     write_config_file unless build.include? "without-config-file"
   end
 

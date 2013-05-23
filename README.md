@@ -108,14 +108,14 @@ If using Apache, you will need to update the `LoadModule` call. For convenience,
     # /etc/apache2/httpd.conf
     # Swapping from PHP53 to PHP54
     # $HOMEBREW_PREFIX is normally `/usr/local`
-    # LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php53/5.3.23/libexec/apache2/libphp5.so
-    LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php54/5.4.13/libexec/apache2/libphp5.so
+    # LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php53/5.3.25/libexec/apache2/libphp5.so
+    LoadModule php5_module    $HOMEBREW_PREFIX/Cellar/php54/5.4.15/libexec/apache2/libphp5.so
 
 If using FPM, you will need to unload the `plist` controlling php, or manually stop the daemon, via your command line:
 
     # Swapping from PHP53 to PHP54
     # $HOMEBREW_PREFIX is normally `/usr/local`
-    cp $HOMEBREW_PREFIX/Cellar/php54/5.4.13/homebrew-php.josegonzalez.php54.plist ~/Library/LaunchAgents/
+    cp $HOMEBREW_PREFIX/Cellar/php54/5.4.15/homebrew-php.josegonzalez.php54.plist ~/Library/LaunchAgents/
     launchctl unload -w ~/Library/LaunchAgents/homebrew-php.josegonzalez.php53.plist
     launchctl load -w ~/Library/LaunchAgents/homebrew-php.josegonzalez.php54.plist
 
@@ -184,13 +184,15 @@ The template for the `php54-example` pecl extension would be as follows. Please 
       end
     end
 
+Before testing the extension, you will need run the command `brew tap --repair` to create a symlink in `$HOMEBREW_PREFIX/Library/Formula`.
+
 Defining extensions inheriting AbstractPhp5(34)Extension will provide a `write_config_file` which add `ext-{extension}.ini` to `conf.d`, don’t forget to remove it manually upon extension removal. Please see [AbstractPhpExtension.rb](Formula/AbstractPhpExtension.rb) for more details.
 
 Please note that your formula installation may deviate significantly from the above; caveats should more or less stay the same, as they give explicit instructions to users as to how to ensure the extension is properly installed.
 
 The ordering of Formula attributes, such as the `homepage`, `url`, `sha1`, etc. should follow the above order for consistency. The `version` is only included when the url does not include a version in the filename. `head` installations are not required.
 
-All official PHP extensions should be built for all stable versions of PHP included in `homebrew-php`. As of this writing, these version are `5.3.24` and `5.4.14`.
+All official PHP extensions should be built for all stable versions of PHP included in `homebrew-php`. As of this writing, these version are `5.3.25` and `5.4.15`.
 
 ## Todo
 

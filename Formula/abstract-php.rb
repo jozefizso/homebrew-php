@@ -130,7 +130,11 @@ INFO
 
   def apache_apxs
     if build.include? 'homebrew-apxs'
-      "#{HOMEBREW_PREFIX}/bin/apxs"
+      ['sbin', 'bin'].each do |dir|
+        if File.exist?(location = "#{HOMEBREW_PREFIX}/#{dir}/apxs")
+          return location
+        end
+      end
     else
       '/usr/sbin/apxs'
     end
@@ -242,9 +246,9 @@ INFO
 
     if build.include? 'with-libmysql'
       args << "--with-mysql-sock=/tmp/mysql.sock"
-      args << "--with-mysqli=#{$HOMEBREW_PREFIX}/bin/mysql_config"
-      args << "--with-mysql=#{$HOMEBREW_PREFIX}"
-      args << "--with-pdo-mysql=#{$HOMEBREW_PREFIX}"
+      args << "--with-mysqli=#{HOMEBREW_PREFIX}/bin/mysql_config"
+      args << "--with-mysql=#{HOMEBREW_PREFIX}"
+      args << "--with-pdo-mysql=#{HOMEBREW_PREFIX}"
     elsif !build.include? 'without-mysql'
       args << "--with-mysql-sock=/tmp/mysql.sock"
       args << "--with-mysqli=mysqlnd"
@@ -297,7 +301,7 @@ INFO
     # Bug in PHP 5.x causes build to fail on OSX 10.5 Leopard due to
     # outdated system libraries being first on library search path:
     # https://bugs.php.net/bug.php?id=44294
-    "https://raw.github.com/gist/4222668/923819a243f3b6fefb79471671dbc8baff6e72b7/Makefile.global.diff"
+    "https://raw.github.com/gist/4222668/923819a243f3b6fefb79471671dbc8baff6e72b7/Makefile.global.diff" if MacOS.version == :leopard
   end
 
   def _install
@@ -309,8 +313,8 @@ INFO
     if build_apache?
       # Use Homebrew prefix for the Apache libexec folder
       inreplace "Makefile",
-	/^INSTALL_IT = \$\(mkinstalldirs\) '([^']+)' (.+) LIBEXECDIR=([^\s]+) (.+)$/,
-	"INSTALL_IT = $(mkinstalldirs) '#{libexec}/apache2' \\2 LIBEXECDIR='#{libexec}/apache2' \\4"
+        /^INSTALL_IT = \$\(mkinstalldirs\) '([^']+)' (.+) LIBEXECDIR=([^\s]+) (.+)$/,
+        "INSTALL_IT = $(mkinstalldirs) '#{libexec}/apache2' \\2 LIBEXECDIR='#{libexec}/apache2' \\4"
     end
 
     if build.include?('with-intl') && build_intl?
@@ -430,9 +434,9 @@ INFO
 
       if MacOS.version >= :mountain_lion
         s << <<-EOS.undent
-          Mountain Lion comes with php-fpm pre-installed, to ensure you are using the brew version you need to make sure #{$HOMEBREW_PREFIX}/sbin is before /usr/sbin in your PATH:
+          Mountain Lion comes with php-fpm pre-installed, to ensure you are using the brew version you need to make sure #{HOMEBREW_PREFIX}/sbin is before /usr/sbin in your PATH:
 
-            PATH="#{$HOMEBREW_PREFIX}/sbin:$PATH"
+            PATH="#{HOMEBREW_PREFIX}/sbin:$PATH"
         EOS
       end
 
