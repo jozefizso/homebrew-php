@@ -37,9 +37,9 @@ class AbstractPhp < Formula
     depends_on 'libpng'
     depends_on 'libxml2' unless MacOS.version >= :lion
     depends_on 'openssl' if build.include? 'with-homebrew-openssl'
-    depends_on 'jozefizso/dupes/tidy' if build.include? 'with-tidy'
-    depends_on 'unixodbc' => :optional
-    depends_on 'jozefizso/dupes/zlib'
+    depends_on 'homebrew/dupes/tidy' if build.include? 'with-tidy'
+    depends_on 'unixodbc'
+    depends_on 'homebrew/dupes/zlib'
 
     # Sanity Checks
     if build.include? 'with-pgsql'
@@ -67,7 +67,6 @@ class AbstractPhp < Formula
     option 'with-thread-safety', 'Build with thread safety'
     option 'with-homebrew-openssl', 'Include OpenSSL support via Homebrew'
     option 'without-bz2', 'Build without bz2 support'
-    option 'without-apxs2-hook', 'Do not modify httpd.conf with LoadModule php_module directive'
   end
 
   def config_path
@@ -180,6 +179,8 @@ INFO
       "--with-gettext=#{Formula.factory('gettext').opt_prefix}",
       "--with-snmp=/usr",
       "--with-libedit",
+      "--with-unixODBC=#{Formula.factory('unixodbc').opt_prefix}",
+      "--with-pdo-odbc=unixODBC,#{Formula.factory('unixodbc').opt_prefix}",
       "--mandir=#{man}",
       "--with-mhash",
     ]
@@ -272,14 +273,6 @@ INFO
       args << "--with-tidy=#{Formula.factory('tidy').opt_prefix}"
     end
 
-    if build.include? 'with-unixodbc'
-      args << "--with-unixODBC=#{Formula.factory('unixodbc').opt_prefix}"
-      args << "--with-pdo-odbc=unixODBC,#{Formula.factory('unixodbc').opt_prefix}"
-    else
-      args << "--with-iodbc"
-      args << "--with-pdo-odbc=generic,/usr,iodbc"
-    end
-
     if build.include? 'without-pear'
       args << "--without-pear"
     end
@@ -299,10 +292,6 @@ INFO
     build.include? 'without-pear'
   end
 
-  def skip_apxs2_hook?
-    build.include? 'without-apxs2-hook'
-  end
-
   def patches
     # Bug in PHP 5.x causes build to fail on OSX 10.5 Leopard due to
     # outdated system libraries being first on library search path:
@@ -316,18 +305,18 @@ INFO
     system "./buildconf" if build.head?
     system "./configure", *args
 
+    # https://bugs.php.net/bug.php?id=62460
+    if php_version.to_s == '5.3'
+      inreplace "Makefile",
+	'EXEEXT = .dSYM',
+	'EXEEXT = '
+    end
+
     if build_apache?
       # Use Homebrew prefix for the Apache libexec folder
       inreplace "Makefile",
         /^INSTALL_IT = \$\(mkinstalldirs\) '([^']+)' (.+) LIBEXECDIR=([^\s]+) (.+)$/,
         "INSTALL_IT = $(mkinstalldirs) '#{libexec}/apache2' \\2 LIBEXECDIR='#{libexec}/apache2' \\4"
-    end
-
-    if skip_apxs2_hook?
-      # apxs will register php5_module commented out in httpd.conf
-      inreplace "Makefile",
-        /^INSTALL_IT = (.+\/.+\/apxs.+)-a(.+)$/,
-        "INSTALL_IT = \\1-A\\2"
     end
 
     if build.include?('with-intl') && build_intl?
