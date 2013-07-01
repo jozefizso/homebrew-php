@@ -3,9 +3,9 @@ require File.join(File.dirname(__FILE__), 'abstract-php-extension')
 class Php54Amqp < AbstractPhp54Extension
   init
   homepage 'http://pecl.php.net/package/amqp'
-  url 'http://pecl.php.net/get/amqp-1.0.9.tgz'
-  sha1 '020ae71214fa2f57aeb70f0ec139ffe43a477ded'
-  head 'http://svn.php.net/repository/pecl/amqp/trunk/', :using => :svn
+  url 'http://pecl.php.net/get/amqp-1.2.0.tgz'
+  sha1 '4b0984148d20532bd6a61e8fa2c46a85d55de991'
+  head 'http://svn.php.net/repository/pecl/amqp/trunk/'
 
   depends_on 'rabbitmq-c'
 
