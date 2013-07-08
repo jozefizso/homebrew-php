@@ -37,9 +37,9 @@ class AbstractPhp < Formula
     depends_on 'libpng'
     depends_on 'libxml2' unless MacOS.version >= :lion
     depends_on 'openssl' if build.include? 'with-homebrew-openssl'
-    depends_on 'homebrew/dupes/tidy' if build.include? 'with-tidy'
+    depends_on 'jozefizso/dupes/tidy' if build.include? 'with-tidy'
     depends_on 'unixodbc' => :optional
-    depends_on 'homebrew/dupes/zlib'
+    depends_on 'jozefizso/dupes/zlib'
 
     # Sanity Checks
     if build.include? 'with-pgsql'
