@@ -67,6 +67,7 @@ class AbstractPhp < Formula
     option 'with-thread-safety', 'Build with thread safety'
     option 'with-homebrew-openssl', 'Include OpenSSL support via Homebrew'
     option 'without-bz2', 'Build without bz2 support'
+    option 'without-apxs2-hook', 'Do not modify httpd.conf with LoadModule php_module directive'
   end
 
   def config_path
@@ -298,6 +299,10 @@ INFO
     build.include? 'without-pear'
   end
 
+  def skip_apxs2_hook?
+    build.include? 'without-apxs2-hook'
+  end
+
   def patches
     # Bug in PHP 5.x causes build to fail on OSX 10.5 Leopard due to
     # outdated system libraries being first on library search path:
@@ -316,6 +321,13 @@ INFO
       inreplace "Makefile",
         /^INSTALL_IT = \$\(mkinstalldirs\) '([^']+)' (.+) LIBEXECDIR=([^\s]+) (.+)$/,
         "INSTALL_IT = $(mkinstalldirs) '#{libexec}/apache2' \\2 LIBEXECDIR='#{libexec}/apache2' \\4"
+    end
+
+    if skip_apxs2_hook?
+      # apxs will register php5_module commented out in httpd.conf
+      inreplace "Makefile",
+        /^INSTALL_IT = (.+\/.+\/apxs.+)-a(.+)$/,
+        "INSTALL_IT = \\1-A\\2"
     end
 
     if build.include?('with-intl') && build_intl?
