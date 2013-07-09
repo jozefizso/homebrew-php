@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'abstract-php-extension')
 
-class Php54Opcache < AbstractPhp54Extension
+class Php55Opcache < AbstractPhp55Extension
   init
   homepage 'https://github.com/zend-dev/ZendOptimizerPlus'
   url 'https://github.com/zend-dev/ZendOptimizerPlus/archive/v7.0.2.tar.gz'
@@ -17,7 +17,7 @@ class Php54Opcache < AbstractPhp54Extension
 
     safe_phpize
     system "./configure", "--prefix=#{prefix}",
-                          phpconfig
+			  phpconfig
     system "make"
     prefix.install "modules/opcache.so"
     write_config_file unless build.include? "without-config-file"
