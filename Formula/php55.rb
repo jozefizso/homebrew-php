@@ -2,9 +2,9 @@ require File.join(File.dirname(__FILE__), 'abstract-php')
 
 class Php55 < AbstractPhp
   init
-  url 'http://www.php.net/get/php-5.5.1.tar.bz2/from/this/mirror'
-  sha1 'b31b6922cb2796a52be9dc6696f31fcbb20ac916'
-  version '5.5.1'
+  url 'http://www.php.net/get/php-5.5.2.tar.bz2/from/this/mirror'
+  sha1 '94f42a7807ae21b3a547bf69310dc454f613fe1f'
+  version '5.5.2'
 
   head 'https://github.com/php/php-src.git', :branch => 'PHP-5.5'
 
