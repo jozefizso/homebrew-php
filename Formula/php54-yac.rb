@@ -12,7 +12,7 @@ class Php54Yac < AbstractPhp54Extension
 
     safe_phpize
     system "./configure", "--prefix=#{prefix}",
-			  phpconfig
+                          phpconfig
     system "make"
     prefix.install %w(modules/yac.so)
     write_config_file unless build.include? "without-config-file"

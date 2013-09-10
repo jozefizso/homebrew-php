@@ -14,9 +14,9 @@ class Php53Tidy < AbstractPhp53Extension
 
     safe_phpize
     system "./configure", "--prefix=#{prefix}",
-			  phpconfig,
-			  "--disable-dependency-tracking",
-			  "--with-tidy"
+                          phpconfig,
+                          "--disable-dependency-tracking",
+                          "--with-tidy"
     system "make"
     prefix.install "modules/tidy.so"
     write_config_file unless build.include? "without-config-file"

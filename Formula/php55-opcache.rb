@@ -8,7 +8,6 @@ class Php55Opcache < AbstractPhp55Extension
   head 'https://github.com/zendtech/ZendOptimizerPlus.git'
 
   depends_on 'pcre'
-  depends_on 'autoconf'
 
   def extension_type; "zend_extension"; end
 
@@ -17,7 +16,7 @@ class Php55Opcache < AbstractPhp55Extension
 
     safe_phpize
     system "./configure", "--prefix=#{prefix}",
-			  phpconfig
+                          phpconfig
     system "make"
     prefix.install "modules/opcache.so"
     write_config_file unless build.include? "without-config-file"

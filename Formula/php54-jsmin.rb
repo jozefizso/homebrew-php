@@ -14,7 +14,7 @@ class Php54Jsmin < AbstractPhp53Extension
 
     safe_phpize
     system "./configure", "--prefix=#{prefix}",
-			  phpconfig
+                          phpconfig
     system "make"
     prefix.install "modules/jsmin.so"
     write_config_file unless build.include? "without-config-file"

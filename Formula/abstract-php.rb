@@ -67,6 +67,7 @@ class AbstractPhp < Formula
     option 'with-thread-safety', 'Build with thread safety'
     option 'with-homebrew-openssl', 'Include OpenSSL support via Homebrew'
     option 'without-bz2', 'Build without bz2 support'
+    option 'without-pcntl', 'Build without Process Control support'
   end
 
   def config_path
@@ -156,7 +157,6 @@ INFO
       "--enable-ftp",
       "--enable-sockets",
       "--enable-zip",
-      "--enable-pcntl",
       "--enable-shmop",
       "--enable-sysvsem",
       "--enable-sysvshm",
@@ -281,6 +281,10 @@ INFO
       args << "--enable-maintainer-zts"
     end
 
+    unless build.include? 'without-pcntl'
+      args << "--enable-pcntl"
+    end
+
     args
   end
 
@@ -308,8 +312,8 @@ INFO
     # https://bugs.php.net/bug.php?id=62460
     if php_version.to_s == '5.3'
       inreplace "Makefile",
-	'EXEEXT = .dSYM',
-	'EXEEXT = '
+        'EXEEXT = .dSYM',
+        'EXEEXT = '
     end
 
     if build_apache?

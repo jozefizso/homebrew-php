@@ -4,17 +4,16 @@ require File.expand_path("../../Requirements/phar-requirement", Pathname.new(__F
 
 class Phpcpd < Formula
   homepage 'https://github.com/sebastianbergmann/phpcpd'
-  url 'http://pear.phpunit.de/get/phpcpd.phar'
-  sha1 '86d59e472a424ab41bb657d41b77dc01a4868dc7'
-  version '1.4.0'
+  url 'http://pear.phpunit.de/get/phpcpd-1.4.3.phar'
+  sha1 '8a71cfd8bf46fc52a19040b6d22af0ffeebecddf'
 
   depends_on PhpMetaRequirement
   depends_on PharRequirement
 
   def install
-    libexec.install "phpcpd.phar"
+    libexec.install "phpcpd-#{version}.phar"
     sh = libexec + "phpcpd"
-    sh.write("#!/bin/sh\n\n/usr/bin/env php -d allow_url_fopen=On -d detect_unicode=Off #{libexec}/phpcpd.phar $*")
+    sh.write("#!/bin/sh\n\n/usr/bin/env php -d allow_url_fopen=On -d detect_unicode=Off #{libexec}/phpcpd-#{version}.phar $*")
     chmod 0755, sh
     bin.install_symlink sh
   end
