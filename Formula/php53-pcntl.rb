@@ -3,9 +3,9 @@ require File.join(File.dirname(__FILE__), 'abstract-php-extension')
 class Php53Pcntl < AbstractPhp53Extension
   init
   homepage 'http://php.net/manual/en/book.pcntl.php'
-  url 'http://www.php.net/get/php-5.3.26.tar.bz2/from/this/mirror'
-  sha1 'd2f97da600b640d618a8790dab22b519aa87b056'
-  version '5.3.26'
+  url PHP_SRC_TARBALL
+  sha256 PHP_CHECKSUM[:sha256]
+  version PHP_VERSION
 
   def install
     Dir.chdir "ext/pcntl"
@@ -18,6 +18,6 @@ class Php53Pcntl < AbstractPhp53Extension
                           "--disable-dependency-tracking"
     system "make"
     prefix.install "modules/pcntl.so"
-    write_config_file unless build.include? "without-config-file"
+    write_config_file if build.with? "config-file"
   end
 end

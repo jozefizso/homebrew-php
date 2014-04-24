@@ -2,14 +2,17 @@ require File.join(File.dirname(__FILE__), 'abstract-php')
 
 class Php52 < AbstractPhp
   init
-  url 'http://www.php.net/get/php-5.2.17.tar.bz2/from/this/mirror'
+  url 'http://museum.php.net/php5/php-5.2.17.tar.bz2'
   sha1 'd68f3b09f766990d815a3c4c63c157db8dab8095'
-  version '5.2.17'
 
   head 'https://github.com/php/php-src.git', :branch => 'PHP-5.2'
 
   depends_on 'mhash'
-  depends_on 'libevent' if build.include? 'with-fpm'
+  depends_on 'libevent' if build.with? 'fpm'
+
+  if build.with? 'phpdbg'
+    raise "phpdbg is not supported for this version of PHP"
+  end
 
   def php_version
     5.2
@@ -39,20 +42,20 @@ class Php52 < AbstractPhp
     defaults = super
     defaults.delete '--with-mhash'
 
-    if build.include?('with-mysql') || build.include?('with-mariadb')
+    if build.with?('mysql') || build.with?('mariadb')
       defaults.delete '--with-mysqli=mysqlnd'
       defaults.delete '--with-mysql=mysqlnd'
       defaults.delete '--with-pdo-mysql=mysqlnd'
 
-      defaults << "--with-mysqli=#{Formula.factory('mysql').opt_prefix}/bin/mysql_config"
-      defaults << "--with-mysql=#{Formula.factory('mysql').opt_prefix}/bin/mysql_config"
-      defaults << "--with-pdo-mysql=#{Formula.factory('mysql').opt_prefix}/bin/mysql_config"
+      defaults << "--with-mysqli=#{Formula['mysql'].opt_prefix}/bin/mysql_config"
+      defaults << "--with-mysql=#{Formula['mysql'].opt_prefix}/bin/mysql_config"
+      defaults << "--with-pdo-mysql=#{Formula['mysql'].opt_prefix}/bin/mysql_config"
     end
 
     defaults + [
       '--enable-zend-multibyte',
       '--enable-sqlite-utf8',
-      "--with-mhash=#{Formula.factory('mhash').opt_prefix}"
+      "--with-mhash=#{Formula['mhash'].opt_prefix}"
     ]
   end
 

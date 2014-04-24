@@ -9,19 +9,19 @@ class Php54Redis < AbstractPhp54Extension
 
   option 'with-igbinary', "Build with igbinary support"
 
-  depends_on 'php54-igbinary' if build.include?('with-igbinary')
+  depends_on 'php54-igbinary' if build.with? "igbinary"
 
   def install
     ENV.universal_binary if build.universal?
 
     args = []
-    args << "--enable-redis-igbinary" if build.include? 'with-igbinary'
+    args << "--enable-redis-igbinary" if build.with? 'igbinary'
 
     safe_phpize
 
-    if build.include? 'with-igbinary'
+    if build.with? 'igbinary'
       system "mkdir -p ext/igbinary"
-      cp "#{Formula.factory('php54-igbinary').opt_prefix}/include/igbinary.h", "ext/igbinary/igbinary.h"
+      cp "#{Formula['php54-igbinary'].opt_prefix}/include/igbinary.h", "ext/igbinary/igbinary.h"
     end
 
     system "./configure", "--prefix=#{prefix}",
@@ -29,6 +29,6 @@ class Php54Redis < AbstractPhp54Extension
                           *args
     system "make"
     prefix.install "modules/redis.so"
-    write_config_file unless build.include? "without-config-file"
+    write_config_file if build.with? "config-file"
   end
 end

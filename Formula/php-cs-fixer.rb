@@ -5,8 +5,8 @@ require File.expand_path("../../Requirements/phar-building-requirement", Pathnam
 
 class PhpCsFixer < Formula
   homepage 'http://cs.sensiolabs.org'
-  url 'https://github.com/fabpot/PHP-CS-Fixer/archive/v0.2.0.tar.gz'
-  sha1 'b656560c28b31da179b1a4a53a23b9e356d582ff'
+  url 'https://github.com/fabpot/PHP-CS-Fixer/archive/v0.4.0.tar.gz'
+  sha1 '706a26401ccac74e4a12d57acc5aa4214b55dfb8'
   head 'https://github.com/fabpot/PHP-CS-Fixer.git'
 
   def self.init
@@ -14,9 +14,10 @@ class PhpCsFixer < Formula
     depends_on PharRequirement
     depends_on PharBuildingRequirement
     depends_on "composer"
-    depends_on "php53" if Formula.factory("php53").linked_keg.exist?
-    depends_on "php54" if Formula.factory("php54").linked_keg.exist?
-    depends_on "php55" if Formula.factory("php55").linked_keg.exist?
+    depends_on "php53" if Formula['php53'].linked_keg.exist?
+    depends_on "php54" if Formula['php54'].linked_keg.exist?
+    depends_on "php55" if Formula['php55'].linked_keg.exist?
+    depends_on "php56" if Formula['php56'].linked_keg.exist?
  end
 
   init
@@ -27,7 +28,7 @@ class PhpCsFixer < Formula
     cmd = [
       "mkdir -p src",
       "rsync -a --exclude 'src' . src/",
-      "cd src && /usr/bin/env php -d allow_url_fopen=On -d detect_unicode=Off  #{Formula.factory('composer').libexec}/composer.phar install",
+      "cd src && /usr/bin/env php -d allow_url_fopen=On -d detect_unicode=Off  #{Formula['composer'].libexec}/composer.phar install",
       "cd src && sed -i '' '1d' php-cs-fixer",
       "php -f genphar.php",
     ].each { |c| `#{c}` }

@@ -3,8 +3,8 @@ require File.join(File.dirname(__FILE__), 'abstract-php-extension')
 class Php53Phalcon < AbstractPhp53Extension
   init
   homepage 'http://phalconphp.com/'
-  url 'https://github.com/phalcon/cphalcon/archive/v1.2.3.tar.gz'
-  sha1 '431998a4db613c4173301e36053afdfacece5c25'
+  url 'https://github.com/phalcon/cphalcon/archive/phalcon-v1.3.1.tar.gz'
+  sha1 '1ed7d60701f0ebf3e3e9c186d7cc2323464604b3'
   head 'https://github.com/phalcon/cphalcon.git'
 
   depends_on 'pcre'
@@ -24,6 +24,6 @@ class Php53Phalcon < AbstractPhp53Extension
                           "--enable-phalcon"
     system "make"
     prefix.install "modules/phalcon.so"
-    write_config_file unless build.include? "without-config-file"
+    write_config_file if build.with? "config-file"
   end
 end

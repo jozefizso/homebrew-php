@@ -2,8 +2,8 @@ require 'formula'
 
 class Phpunit < Formula
   homepage 'http://phpunit.de/manual/current/en/'
-  url 'http://pear.phpunit.de/get/phpunit-3.7.24.phar'
-  sha1 'de677ba60b2ccd135002d02501cde16a471503f5'
+  url 'https://phar.phpunit.de/phpunit-4.0.7.phar'
+  sha1 '38951386355ed099650b323a7a1c9621ddc07b26'
 
   def install
     libexec.install "phpunit-#{version}.phar"
@@ -12,5 +12,4 @@ class Phpunit < Formula
     chmod 0755, sh
     bin.install_symlink sh
   end
-
 end
