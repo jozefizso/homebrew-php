@@ -1,5 +1,5 @@
 class AbstractPhpVersion < Formula
-  def initialize name="__UNKNOWN__", *args
+  def initialize(name, *args)
     begin
       raise "One does not simply install an AbstractPhp formula" if name == "abstract-php-version"
       super
@@ -44,41 +44,41 @@ class AbstractPhpVersion < Formula
   end
 
   module Php54Defs
-    PHP_SRC_TARBALL = 'http://www.php.net/get/php-5.4.27.tar.bz2/from/this/mirror'
+    PHP_SRC_TARBALL = 'http://www.php.net/get/php-5.4.30.tar.bz2/from/this/mirror'
     PHP_GITHUB_URL  = 'https://github.com/php/php-src.git'
-    PHP_VERSION     = '5.4.27'
+    PHP_VERSION     = '5.4.30'
     PHP_BRANCH      = 'PHP-5.4'
 
     PHP_CHECKSUM    = {
-                        :md5    => '1c6e99187d25023411b663ea09f145ee',
-                        :sha1   => '798f2a803d81b386da62e1986ac0f743ecb6c3be',
-                        :sha256 => '09dcc44cded735e1cf1b1b9f2749d1a0fd90e03378b6a70364a662f4740e61e2',
+                        :md5    => 'a8a27fdc1d9e1020c9f8922b608326de',
+                        :sha1   => '1dbc68dfb696d0c776a1bcf9566a96b6bae5e1c7',
+                        :sha256 => '32b83644e42d57388d6e5ec700c3502cde5f5e1207395b1e361e4cb2ce496ce6',
                       }
   end
 
   module Php55Defs
-    PHP_SRC_TARBALL = 'http://www.php.net/get/php-5.5.11.tar.bz2/from/this/mirror'
+    PHP_SRC_TARBALL = 'http://www.php.net/get/php-5.5.14.tar.bz2/from/this/mirror'
     PHP_GITHUB_URL  = 'https://github.com/php/php-src.git'
-    PHP_VERSION     = '5.5.11'
+    PHP_VERSION     = '5.5.14'
     PHP_BRANCH      = 'PHP-5.5'
 
     PHP_CHECKSUM    = {
-                        :md5    => 'c8c9ad960bae0265054b5879423f7a75',
-                        :sha1   => '58d660e5455b3f2abdfe3205182ffe3a58b5d1cd',
-                        :sha256 => '60e14c255f2a461a7a26639b84a2fc448cc2f91c8dead0e9fd00cd8ba27a2e96',
+                        :md5    => 'b53e5f47c59ffbe26d20957636695baa',
+                        :sha1   => '062d351da165aa0568e4d8cbc53a18d73b99f49a',
+                        :sha256 => 'df5a057877f827549e0a60b43fb01e4bd440814bcf04fbd70bacbddf74482610',
                       }
   end
 
   module Php56Defs
-    PHP_SRC_TARBALL = 'http://downloads.php.net/tyrael/php-5.6.0beta1.tar.bz2'
+    PHP_SRC_TARBALL = 'http://downloads.php.net/tyrael/php-5.6.0RC2.tar.bz2'
     PHP_GITHUB_URL  = 'https://github.com/php/php-src.git'
-    PHP_VERSION     = '5.6.0-beta.1'
+    PHP_VERSION     = '5.6.0-rc.2'
     PHP_BRANCH      = 'PHP-5.6'
 
     PHP_CHECKSUM    = {
-                        :md5    => 'f93394cf0035842265421665b770dd05',
-                        :sha1   => '365f4d8b0f19b0f12a6276668f9c295e4cd21c5d',
-                        :sha256 => '85e101acdfa15da3cce63a9d18bbaa92c2f1507246305bd20baf1e5824596d7f',
+                        :md5    => '6f52262bb7a721c0381a2bd6c16bb21e',
+                        :sha1   => '3e22cf637fef1f511bca34827f107f7fd9211511',
+                        :sha256 => '526f5def1218b58f68a6633cbf6ce6041ab6d244a0f91c007f20a2c0ed515d98',
                       }
   end
 end

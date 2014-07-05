@@ -1,7 +1,7 @@
 require 'formula'
-require File.expand_path("../../Requirements/php-meta-requirement", Pathname.new(__FILE__).realpath)
-require File.expand_path("../../Requirements/phar-requirement", Pathname.new(__FILE__).realpath)
-require File.expand_path("../../Requirements/phar-building-requirement", Pathname.new(__FILE__).realpath)
+require File.expand_path("../../Requirements/php-meta-requirement", __FILE__)
+require File.expand_path("../../Requirements/phar-requirement", __FILE__)
+require File.expand_path("../../Requirements/phar-building-requirement", __FILE__)
 
 class PhpCsFixer < Formula
   homepage 'http://cs.sensiolabs.org'
@@ -18,14 +18,14 @@ class PhpCsFixer < Formula
     depends_on "php54" if Formula['php54'].linked_keg.exist?
     depends_on "php55" if Formula['php55'].linked_keg.exist?
     depends_on "php56" if Formula['php56'].linked_keg.exist?
- end
+  end
 
   init
 
   def install
     File.open("genphar.php", 'w') {|f| f.write(phar_stub) }
 
-    cmd = [
+    [
       "mkdir -p src",
       "rsync -a --exclude 'src' . src/",
       "cd src && /usr/bin/env php -d allow_url_fopen=On -d detect_unicode=Off  #{Formula['composer'].libexec}/composer.phar install",

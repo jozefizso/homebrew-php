@@ -2,8 +2,8 @@ require 'formula'
 
 class PhpVersion < Formula
   homepage  'https://github.com/wilmoore/php-version#simple-php-version-switching'
-  url       'https://github.com/wilmoore/php-version/archive/0.10.4.tar.gz'
-  sha1      '57afc04e73475465fb28fd446e97478aecae0e9a'
+  url       'https://github.com/wilmoore/php-version/archive/0.12.0.tar.gz'
+  sha1      '5398407b97fff2fb898fa66a197de2fe3383ca9a'
   head      'https://github.com/wilmoore/php-version.git'
 
   def install
@@ -18,10 +18,10 @@ class PhpVersion < Formula
 
       It is recommended that you install versions of PHP via homebrew as depicted below:
 
-        brew install php55
-        brew unlink php55
+        brew install php56
+        brew unlink php56
 
-      Type `php-version --help` for more configuration options (i.e. how to add extra PHP installation paths).
+      Type `php-version --help` for more configuration options.
     EOS
   end
 end

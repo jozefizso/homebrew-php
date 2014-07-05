@@ -12,7 +12,7 @@ def build_intl?
 end
 
 class AbstractPhp < Formula
-  def initialize name="__UNKNOWN__", *args
+  def initialize(name, *args)
     begin
       raise "One does not simply install an AbstractPhp formula" if name == "abstract-php"
       super
@@ -48,19 +48,20 @@ class AbstractPhp < Formula
     end
 
     depends_on 'curl' if build.include?('with-homebrew-curl') || MacOS.version < :lion
-    depends_on 'freetds' if build.with? 'mssql'
+    depends_on 'freetds' if build.include?('with-mssql')
     depends_on 'freetype'
     depends_on 'gettext'
     depends_on 'gmp' => :optional
     depends_on 'icu4c' if build.include?('with-intl') && build_intl?
-    depends_on 'imap-uw' if build.with? 'imap'
+    depends_on 'imap-uw' if build.include?('with-imap')
     depends_on 'jpeg'
     depends_on 'libpng'
     depends_on 'libxml2' unless MacOS.version >= :lion
-    depends_on 'openssl' if build.with? 'homebrew-openssl'
-    depends_on 'homebrew/dupes/tidy' if build.with? 'tidy'
+    depends_on 'openssl' if build.include?('with-homebrew-openssl')
+    depends_on 'homebrew/dupes/tidy' if build.include?('with-tidy')
     depends_on 'unixodbc'
     depends_on 'homebrew/dupes/zlib'
+    depends_on 'libtool' => :build if build.without? 'disable-opcache'
 
     # Sanity Checks
     if build.with? 'pgsql'
@@ -92,6 +93,7 @@ class AbstractPhp < Formula
     option 'with-homebrew-libxslt', 'Include LibXSLT support via Homebrew'
     option 'without-bz2', 'Build without bz2 support'
     option 'without-pcntl', 'Build without Process Control support'
+    option 'disable-opcache', 'Build without Opcache extension'
   end
 
   # Fixes the pear .lock permissions issue that keeps it from operating correctly.
@@ -129,30 +131,30 @@ class AbstractPhp < Formula
     user_pear = "#{home_path}/pear.conf"
     config_pearrc = "#{config_path}/.pearrc"
     user_pearrc = "#{home_path}/.pearrc"
-    if File.exists?(config_pear) || File.exists?(user_pear) || File.exists?(config_pearrc) || File.exists?(user_pearrc)
+    if File.exist?(config_pear) || File.exist?(user_pear) || File.exist?(config_pearrc) || File.exist?(user_pearrc)
       opoo "Backing up all known pear.conf and .pearrc files"
       opoo <<-INFO
 If you have a pre-existing pear install outside
          of homebrew-php, or you are using a non-standard
          pear.conf location, installation may fail.
 INFO
-      mv(config_pear, "#{config_pear}-backup") if File.exists? config_pear
-      mv(user_pear, "#{user_pear}-backup") if File.exists? user_pear
-      mv(config_pearrc, "#{config_pearrc}-backup") if File.exists? config_pearrc
-      mv(user_pearrc, "#{user_pearrc}-backup") if File.exists? user_pearrc
+      mv(config_pear, "#{config_pear}-backup") if File.exist? config_pear
+      mv(user_pear, "#{user_pear}-backup") if File.exist? user_pear
+      mv(config_pearrc, "#{config_pearrc}-backup") if File.exist? config_pearrc
+      mv(user_pearrc, "#{user_pearrc}-backup") if File.exist? user_pearrc
     end
 
     begin
       _install
-      rm_f("#{config_pear}-backup") if File.exists? "#{config_pear}-backup"
-      rm_f("#{user_pear}-backup") if File.exists? "#{user_pear}-backup"
-      rm_f("#{config_pearrc}-backup") if File.exists? "#{config_pearrc}-backup"
-      rm_f("#{user_pearrc}-backup") if File.exists? "#{user_pearrc}-backup"
-    rescue Exception => e
-      mv("#{config_pear}-backup", config_pear) if File.exists? "#{config_pear}-backup"
-      mv("#{user_pear}-backup", user_pear) if File.exists? "#{user_pear}-backup"
-      mv("#{config_pearrc}-backup", config_pearrc) if File.exists? "#{config_pearrc}-backup"
-      mv("#{user_pearrc}-backup", user_pearrc) if File.exists? "#{user_pearrc}-backup"
+      rm_f("#{config_pear}-backup") if File.exist? "#{config_pear}-backup"
+      rm_f("#{user_pear}-backup") if File.exist? "#{user_pear}-backup"
+      rm_f("#{config_pearrc}-backup") if File.exist? "#{config_pearrc}-backup"
+      rm_f("#{user_pearrc}-backup") if File.exist? "#{user_pearrc}-backup"
+    rescue Exception
+      mv("#{config_pear}-backup", config_pear) if File.exist? "#{config_pear}-backup"
+      mv("#{user_pear}-backup", user_pear) if File.exist? "#{user_pear}-backup"
+      mv("#{config_pearrc}-backup", config_pearrc) if File.exist? "#{config_pearrc}-backup"
+      mv("#{user_pearrc}-backup", user_pearrc) if File.exist? "#{user_pearrc}-backup"
       raise
     end
   end
@@ -368,27 +370,27 @@ INFO
     ENV.deparallelize # parallel install fails on some systems
     system "make install"
 
-    config_path.install default_config => "php.ini" unless File.exists? config_path+"php.ini"
+    config_path.install default_config => "php.ini" unless File.exist? config_path+"php.ini"
 
     chmod_R 0775, lib+"php"
 
     system bin+"pear", "config-set", "php_ini", config_path+"php.ini" unless skip_pear_config_set?
 
     if build.with? 'fpm'
-      if File.exists?('sapi/fpm/init.d.php-fpm')
+      if File.exist?('sapi/fpm/init.d.php-fpm')
         sbin.install 'sapi/fpm/init.d.php-fpm' => "php#{php_version_path.to_s}-fpm"
       end
 
-      if File.exists?('sapi/cgi/fpm/php-fpm')
+      if File.exist?('sapi/cgi/fpm/php-fpm')
         sbin.install 'sapi/cgi/fpm/php-fpm' => "php#{php_version_path.to_s}-fpm"
       end
 
-      if !File.exists?(config_path+"php-fpm.conf")
-        if File.exists?('sapi/fpm/php-fpm.conf')
+      if !File.exist?(config_path+"php-fpm.conf")
+        if File.exist?('sapi/fpm/php-fpm.conf')
           config_path.install 'sapi/fpm/php-fpm.conf'
         end
 
-        if File.exists?('sapi/cgi/fpm/php-fpm.conf')
+        if File.exist?('sapi/cgi/fpm/php-fpm.conf')
           config_path.install 'sapi/cgi/fpm/php-fpm.conf'
         end
 
